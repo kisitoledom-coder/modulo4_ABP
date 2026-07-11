@@ -1,71 +1,79 @@
-// --- LECCIÓN 1 y 2: Variables y bienvenida ---
+// LECCIÓN 1 y 2: Bienvenida
 console.log("¡Aplicación de consola iniciada correctamente!");
-const mensajeBienvenida = "Bienvenido a la calculadora de consola.";
-alert(mensajeBienvenida);
-
+alert("Bienvenido a la calculadora de consola.");
 let nombre = prompt("Por favor, ingresa tu nombre:");
 alert("¡Hola, " + nombre + "! Vamos a calcular.");
 
-// --- LECCIÓN 3: Arreglos y ciclos ---
-// Crear un arreglo con una lista de elementos (historial vacío al inicio)
+// LECCIÓN 4: Funciones (Modularización)
+
+// 1. Crear funciones para cada operación matemática que reciben parámetros y retornan resultado
+function sumar(a, b) {
+    return a + b;
+}
+
+function restar(a, b) {
+    return a - b;
+}
+
+function multiplicar(a, b) {
+    return a * b;
+}
+
+function dividir(a, b) {
+    if (b === 0) {
+        console.log("Error: No se puede dividir por cero.");
+        return null;
+    }
+    return a / b;
+}
+
+// 2. Llamar funciones dentro de otras funciones
+function calcularOperacion(numero1, numero2, operacion) {
+    switch (operacion) {
+        case "suma":
+            return sumar(numero1, numero2); // Llamada a función interna
+        case "resta":
+            return restar(numero1, numero2);
+        case "multiplicacion":
+            return multiplicar(numero1, numero2);
+        case "division":
+            return dividir(numero1, numero2);
+        default:
+            console.log("Operación no reconocida.");
+            return null;
+    }
+}
+
+// LECCIÓN 3: Arreglos y ciclos (Integrados con las nuevas funciones)
 let historialResultados = [];
 let continuar = true;
 
-// Usar while para repetir el flujo de la calculadora
 while (continuar) {
-    let numero1 = parseFloat(prompt("Ingresa el primer número:"));
-    let numero2 = parseFloat(prompt("Ingresa el segundo número:"));
+    let num1 = parseFloat(prompt("Ingresa el primer número:"));
+    let num2 = parseFloat(prompt("Ingresa el segundo número:"));
 
-    if (isNaN(numero1) || isNaN(numero2)) {
+    if (isNaN(num1) || isNaN(num2)) {
         console.log("Error: Los valores ingresados no son números válidos.");
         alert("Por favor, ingresa solo números.");
     } else {
-        let operacion = prompt("¿Qué operación deseas realizar? (escribe: suma, resta, multiplicacion o division)");
-        let resultado = null;
+        let op = prompt("¿Qué operación deseas realizar? (escribe: suma, resta, multiplicacion o division)");
+        
+        // Usamos nuestra función modularizada principal
+        let resultado = calcularOperacion(num1, num2, op);
 
-        switch (operacion) {
-            case "suma":
-                resultado = numero1 + numero2;
-                break;
-            case "resta":
-                resultado = numero1 - numero2;
-                break;
-            case "multiplicacion":
-                resultado = numero1 * numero2;
-                break;
-            case "division":
-                if (numero2 === 0) {
-                    console.log("Error: No se puede dividir por cero.");
-                } else {
-                    resultado = numero1 / numero2;
-                }
-                break;
-            default:
-                console.log("Operación no reconocida.");
-                break;
-        }
-
-        // Si la operación fue exitosa, la guardamos en el arreglo
         if (resultado !== null) {
-            console.log("El resultado de la " + operacion + " es: " + resultado);
+            console.log("El resultado de la " + op + " es: " + resultado);
             historialResultados.push(resultado);
         }
     }
 
-    // Condición para romper el ciclo while
     let respuesta = prompt("¿Deseas realizar otra operación? (escribe 'si' para continuar)");
     if (respuesta !== "si") {
         continuar = false;
     }
 }
 
-// Usar for para recorrer el arreglo
-console.log("--- Historial de todos los resultados ---");
-for (let i = 0; i < historialResultados.length; i++) {
-    console.log("Operación " + (i + 1) + ": " + historialResultados[i]);
-}
-
-// Implementar una función que filtre elementos según una condición
+// Función de filtro de la lección 3
 function filtrarMayoresADiez(arreglo) {
     let filtrados = [];
     for (let i = 0; i < arreglo.length; i++) {
@@ -76,5 +84,10 @@ function filtrarMayoresADiez(arreglo) {
     return filtrados;
 }
 
-console.log("--- Resultados filtrados (Mayores a 10) ---");
+console.log("--- Historial de resultados ---");
+for (let i = 0; i < historialResultados.length; i++) {
+    console.log("Operación " + (i + 1) + ": " + historialResultados[i]);
+}
+
+console.log("--- Resultados filtrados (>10) ---");
 console.log(filtrarMayoresADiez(historialResultados));
